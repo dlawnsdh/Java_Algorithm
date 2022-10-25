@@ -3,8 +3,6 @@ class Solution {
     public int solution(int n, int k) {
         int answer = 0;
         StringBuffer bf = new StringBuffer("");
-        
-        if (n <= k && n != 1) return 1;
 
         while (n >= k) {
             int rest = n % k;
