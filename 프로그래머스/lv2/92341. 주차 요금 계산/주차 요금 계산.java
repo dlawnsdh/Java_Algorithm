@@ -23,8 +23,6 @@ class Solution {
         Collections.sort(arr);
 
         int[] answer = new int[set.size()];
-        int index = 0; //int k = 0;
-
 
         for (int i = 0; i < arr.size(); i++) {
             ArrayList<Fee> innerList = new ArrayList<>();
