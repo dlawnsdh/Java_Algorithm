@@ -7,12 +7,11 @@ class Solution {
         for (int i = 0; i < numbers.length - 1; i++)
             for (int k = i + 1; k < numbers.length; k++) 
                 list.add(numbers[i] + numbers[k]);
-        list = list.stream().distinct().collect(Collectors.toList());
+        list = list.stream().distinct().sorted().collect(Collectors.toList());
         int[] result = new int[list.size()];
         
         for (int i = 0; i < list.size(); i++)
             result[i] = list.get(i);
-        Arrays.sort(result);
         return result;
     }
 }
