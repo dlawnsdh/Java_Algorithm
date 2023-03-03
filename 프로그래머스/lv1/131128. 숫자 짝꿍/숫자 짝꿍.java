@@ -4,7 +4,6 @@ class Solution {
     public String solution(String X, String Y) {
         int[] arrX = new int[10];
         int[] arrY = new int[10];
-        List<Integer> list = new ArrayList<>();
         String str = "";
         
         for (int i = 0; i < X.length(); i++) 
