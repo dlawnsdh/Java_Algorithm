@@ -21,10 +21,6 @@ class Solution {
                     }
                 }
         
-        int cnt = -1;
-        for (int i : arr)
-            if (i > 0)
-                cnt++;
-        return cnt;
+        return Arrays.stream(arr).filter(i -> i > 0).map(i -> 1).sum() - 1;
     }
 }
