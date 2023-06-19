@@ -3,16 +3,13 @@ import java.util.*;
 class Solution {
     public String solution(String[] survey, int[] choices) {
         String s = "";
+        String[][] arr = {{"R", "T"}, {"C", "F"}, {"J", "M"}, {"A", "N"}};
         int[] score = {0, 3, 2, 1, 0, 1, 2, 3};
         Map<String, Integer> m = new HashMap<>();
-        m.put("R", 0);
-        m.put("T", 0);
-        m.put("C", 0);
-        m.put("F", 0);
-        m.put("J", 0);
-        m.put("M", 0);
-        m.put("A", 0);
-        m.put("N", 0);
+        for (int i = 0; i < arr.length; i++) {
+            m.put(arr[i][0], 0);
+            m.put(arr[i][1], 0);
+        }
         
         for (int i = 0; i < survey.length; i++) {
             String str = "";
@@ -25,26 +22,8 @@ class Solution {
                 m.put(str, m.get(str) + score[choices[i]]);
         }
         
-        if (m.get("R").compareTo(m.get("T")) > 0)
-            s += "R";
-        else if (m.get("R").compareTo(m.get("T")) < 0) 
-            s += "T";
-        else s += "R";
-        if (m.get("C").compareTo(m.get("F")) > 0)
-            s += "C";
-        else if (m.get("C").compareTo(m.get("F")) < 0)
-            s += "F";
-        else s += "C";
-        if (m.get("J").compareTo(m.get("M")) > 0)
-            s += "J";
-        else if (m.get("J").compareTo(m.get("M")) < 0)
-            s += "M";
-        else s += "J";
-        if (m.get("A").compareTo(m.get("N")) > 0)
-            s += "A";
-        else if (m.get("A").compareTo(m.get("N")) < 0)
-            s += "N";
-        else s += "A";
+        for (String[] tmp : arr)
+            s += m.get(tmp[0]) >= m.get(tmp[1]) ? tmp[0] : tmp[1];
         
         return s;
     }
