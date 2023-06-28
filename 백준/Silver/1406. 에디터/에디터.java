@@ -6,51 +6,40 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 		String str = br.readLine();
-		int M = Integer.parseInt(br.readLine());
+		int n = Integer.parseInt(br.readLine());
 
-		Stack<String> leftSt = new Stack<>();
-		Stack<String> rightSt = new Stack<>();
-       
-		String[] arr = str.split("");
-		for(String s : arr)
-			leftSt.push(s);
+		Stack<Character> l = new Stack<>();
+        Stack<Character> r = new Stack<>();
+        for (int i = 0; i < str.length(); i++)
+            l.push(str.charAt(i));
 		
-		for(int i = 0; i < M; i++) {
-			String command = br.readLine();
-			char c = command.charAt(0);
+		for(int i = 0; i < n; i++) {
+			String o = br.readLine();
+			char c = o.charAt(0);
 			
 			switch(c) {
 			case 'L':
-				if(!leftSt.isEmpty())
-					rightSt.push(leftSt.pop());
-
-				break;
+				if (!l.isEmpty())
+                    r.push(l.pop());
+                break;
 			case 'D':
-				if(!rightSt.isEmpty())
-					leftSt.push(rightSt.pop());
-
+				if(!r.isEmpty())
+					l.push(r.pop());
 				break;
 			case 'B':
-				if(!leftSt.isEmpty()) {
-					leftSt.pop();
-				}
+				if(!l.isEmpty()) 
+					l.pop();
 				break;
 			case 'P':
-				char t = command.charAt(2);
-				leftSt.push(String.valueOf(t));
-				//leftSt.push(st.nextToken());
-
-				break;
-			default:
+				l.push(o.charAt(2));
 				break;
 			}
 		}
         
-		while(!leftSt.isEmpty())
-			rightSt.push(leftSt.pop());
-		
-		while(!rightSt.isEmpty())
-			bw.write(rightSt.pop());
+		while(!l.isEmpty())
+			r.push(l.pop());
+		while(!r.isEmpty())
+			bw.write(r.pop());
 		
 		bw.flush();
 		bw.close(); 
