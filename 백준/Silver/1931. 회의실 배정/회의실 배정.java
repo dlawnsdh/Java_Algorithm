@@ -20,19 +20,14 @@ public class Main {
             }
         });
         
-        int max = 0;
-        for (int i = 0; i < n - 1; i++) {
-            int cnt = 1;
-            int index = i;
-            for (int k = index + 1; k < n; k++)
-                if (l.get(index)[1] <= l.get(k)[0]) {
-                    cnt++;
-                    index = k;
-                }
-            max = Math.max(max, cnt);
-            break;
-        }
+        int cnt = 1;
+        int index = 0;
+        for (int i = index + 1; i < n; i++)
+            if (l.get(index)[1] <= l.get(i)[0]) {
+                cnt++;
+                index = i;
+            }
         
-        System.out.print(max);
+        System.out.print(cnt);
     }
 }
