@@ -1,19 +1,20 @@
-import java.util.Scanner;
+import java.util.*;
+import java.io.*;
+
 public class Main {
-    static int div(int n) {
-        int[] arr = new int[n + 1];
-        for (int i = 2; i <= n ; i++) {
-            arr[i] = arr[i - 1] + 1; // 1을 뺀 경우
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(br.readLine());
+        int[] arr = new int[1000001];
+        arr[1] = 0;
+
+        for (int i = 2; i <= n; i++) {
+            arr[i] = arr[i - 1] + 1;
             if (i % 2 == 0)
-                arr[i] = Math.min(arr[i], arr[i / 2] + 1);
+                arr[i] = Math.min(arr[i / 2] + 1, arr[i]);
             if (i % 3 == 0)
-                arr[i] = Math.min(arr[i], arr[i / 3] + 1);
+                arr[i] = Math.min(arr[i / 3] + 1, arr[i]);
         }
-        return arr[n];
-    }
-    public static void main(String[] args) {
-        Scanner s = new Scanner(System.in);
-        int n = s.nextInt();
-        System.out.println(div(n));
+        System.out.print(arr[n]);
     }
 }
