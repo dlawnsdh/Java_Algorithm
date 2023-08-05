@@ -1,2 +1,2 @@
-# Java_Algorithm
-알고리즘 문제 자바로 풀이 
+# Java $ Scala Algorithm
+알고리즘 문제 자바와 스칼라로 풀이 
