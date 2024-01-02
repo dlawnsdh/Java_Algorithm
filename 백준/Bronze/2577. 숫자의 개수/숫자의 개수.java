@@ -12,6 +12,7 @@ public class Main {
         for (int i = 0; i < str.length(); i++)
             arr[str.charAt(i) - 48]++;
         
-        Arrays.stream(arr).forEach(System.out::println);
+        for (int i = 0; i < arr.length; i++)
+            System.out.println(arr[i]);
     }
 }
