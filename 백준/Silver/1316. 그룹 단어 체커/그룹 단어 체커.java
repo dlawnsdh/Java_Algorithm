@@ -1,34 +1,25 @@
 import java.util.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner s = new Scanner(System.in);
+	public static void main(String[] args) {
+		Scanner s = new Scanner(System.in);
         int n = Integer.parseInt(s.nextLine());
-        int count = 0;
-
+        int cnt = 0;
+        
         for (int i = 0; i < n; i++) {
+            int[] arr = new int[26];
             String str = s.nextLine();
-            Set<Character> set = new HashSet<>();
-            Stack<Character> stack = new Stack<>();
-            int cnt = 0;
 
-            for (int k = 0; k < str.length(); k++) {
-                char c = str.charAt(k);
-                set.add(c);
-                if (stack.isEmpty() || stack.peek() == c)
-                    stack.push(c);
-                else {
-                    cnt++;
-                    stack.clear();
-                    stack.push(c);
-                }
+            arr[str.charAt(0) - 97]++;
+            for (int k = 1; k < str.length(); k++) {
+                int t = str.charAt(k) - 97;
+                if (str.charAt(k - 1) == str.charAt(k) || (str.charAt(k - 1) != str.charAt(k) && arr[t] == 0))
+                    arr[t]++;
             }
 
-            if (!stack.isEmpty())
+            if (Arrays.stream(arr).sum() == str.length())
                 cnt++;
-            if (cnt == set.size())
-                count++;
         }
-        System.out.print(count);
-    }
+        System.out.println(cnt);
+	}
 }
