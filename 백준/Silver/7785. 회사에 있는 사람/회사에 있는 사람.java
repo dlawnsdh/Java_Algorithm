@@ -1,23 +1,20 @@
 import java.util.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner s = new Scanner(System.in);
+	public static void main(String[] args) {
+		Scanner s = new Scanner(System.in);
         int n = Integer.parseInt(s.nextLine());
-        String[] arr = new String[2];
-        Set<String> set = new HashSet<>();
         
+        Set<String> set = new HashSet<>();
         for (int i = 0; i < n; i++) {
-            arr = s.nextLine().split(" ");
-            if (!set.contains(arr[0]))
-                set.add(arr[0]);
-            else set.remove(arr[0]);
+            String[] str = s.nextLine().split(" ");
+            if (str[1].equals("enter")) set.add(str[0]);
+            else set.remove(str[0]);
         }
         
-        List<String> list = new ArrayList<>(set);
-        Collections.sort(list);
-        
-        for (int i = list.size() - 1; i > -1; i--)
-            System.out.println(list.get(i));
-    } 
+        List<String> l = new ArrayList<>(set);
+        Collections.sort(l);
+        for (int i = l.size() - 1; i >= 0; i--)
+            System.out.println(l.get(i));
+	}
 }
