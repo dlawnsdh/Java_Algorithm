@@ -12,7 +12,7 @@ public class Main {
         }
         
         int max = m.values().stream().max(Integer::compareTo).orElse(0);
-        long num = m.keySet().stream().filter(l -> m.get(l) == max).sorted().findFirst().orElse(0L);
+        long num = m.keySet().stream().filter(k -> m.get(k) == max).min(Long::compareTo).orElse(0L);
         System.out.print(num);
     }
 }
