@@ -2,30 +2,28 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        Scanner s = new Scanner(System.in);
-        Stack<Integer> st = new Stack<>();
+        Scanner sc = new Scanner(System.in);
+        Stack<Integer> s = new Stack<>();
+        int n = sc.nextInt();
+        
+        int cur = 1;
         StringBuilder b = new StringBuilder();
-        int n = s.nextInt();
-        int[] arr = new int[n];
-        for (int i = 0; i < n; i++)
-            arr[i] = s.nextInt();
- 
-        int index = 1;
         for (int i = 0; i < n; i++) {
-            if (st.isEmpty() || index <= arr[i])
-                for (; index <= arr[i]; index++) {
-                    st.push(index);
+            int k = sc.nextInt();
+            if (s.isEmpty() || s.peek() < k) {
+                for (; cur <= k; cur++) {
+                    s.push(cur);
                     b.append("+\n");
                 }
-            else
-                if (st.peek() != arr[i])
-                    break;
-            st.pop();
-            b.append("-\n");
+                s.pop();
+                b.append("-\n");
+            } else if (s.peek() == k) {
+                s.pop();
+                b.append("-\n");
+            }
         }
         
-        if (st.isEmpty())
-            System.out.print(b);
+        if (s.isEmpty()) System.out.print(b);
         else System.out.print("NO");
     }
-}
+} 
