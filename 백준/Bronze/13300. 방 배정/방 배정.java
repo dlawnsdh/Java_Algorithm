@@ -2,25 +2,18 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        Scanner s = new Scanner(System.in);
-        Map<Integer, Integer[]> m = new HashMap<>();
-        int n = s.nextInt();
-        int k = s.nextInt();
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt(); int k = sc.nextInt();  
+        int[][] arr = new int[6][2];
         for (int i = 0; i < n; i++) {
-            int x = s.nextInt();
-            int y = s.nextInt();
-            Integer[] tmp = {0, 0};
-
-            if (m.containsKey(y))
-                tmp = m.get(y);
-            tmp[x]++;
-            m.put(y, tmp);
+            int s = sc.nextInt();
+            int y = sc.nextInt();
+            arr[y - 1][s]++;
         }
         
-        int room = 0;
-        for (Integer[] arr : m.values()) 
-            room += arr[0] / k + arr[0] % k + arr[1] / k + arr[1] % k;
-        
-        System.out.print(room);
+        int sum = 0;
+        for (int i = 0; i < arr.length; i++) 
+            sum += (arr[i][0] / k + arr[i][0] % k + arr[i][1] / k + arr[i][1] % k);
+        System.out.print(sum);
     }
 }
