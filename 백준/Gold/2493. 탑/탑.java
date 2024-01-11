@@ -4,31 +4,28 @@ import java.io.*;
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        Stack<int[]> s = new Stack<>();
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        Stack<Integer> s = new Stack<>();
+        Stack<Integer> idx = new Stack<>();
         int n = Integer.parseInt(br.readLine());
-        int[] arr = new int[n + 1];
-        String[] str = br.readLine().split(" ");
-        for (int i = 0; i < n; i++)
-            arr[i + 1] = Integer.parseInt(str[i]);
 
-        for (int i = 1; i < n + 1; i++) {
-            if (s.isEmpty()) {
-                System.out.print("0 ");
-                s.push(new int[] {arr[i], i});
-            } else {
-                while (!s.isEmpty()) {
-                    if (arr[i] >= s.peek()[0]) s.pop();
-                    else {
-                        System.out.print(s.peek()[1] + " ");
-                        s.push(new int[] {arr[i], i});
-                        break;
-                    }
-                }
-                if (s.isEmpty()) {
-                    System.out.print("0 ");
-                    s.push(new int[] {arr[i], i});
-                }
+        StringBuilder b = new StringBuilder("0 ");
+        String[] arr = br.readLine().split(" ");
+        s.push(Integer.parseInt(arr[0]));
+        idx.push(1);
+        for (int i = 1; i < n; i++) {
+            int k = Integer.parseInt(arr[i]);
+            while (!s.isEmpty() && s.peek() < k) {
+                s.pop();
+                idx.pop();
             }
+            if (s.isEmpty()) b.append("0 ");
+            else b.append(idx.peek()).append(" ");
+            s.push(k);
+            idx.push(i + 1);
         }
+
+        bw.write(String.valueOf(b));
+        bw.flush();
     }
 }
