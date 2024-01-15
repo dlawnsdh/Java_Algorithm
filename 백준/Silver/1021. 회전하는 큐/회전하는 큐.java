@@ -2,28 +2,29 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        Scanner s = new Scanner(System.in);
-        LinkedList<Integer> d = new LinkedList<>();
-        int n = s.nextInt();
-        int m = s.nextInt();
-        int[] arr = new int[m];
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int m = sc.nextInt();
+        LinkedList<Integer> l = new LinkedList<>();
         for (int i = 1; i <= n; i++)
-            d.add(i);
-        for (int i = 0; i < m; i++)
-            arr[i] = s.nextInt();
+            l.add(i);
         
-        int cnt = 0;
+        int sum = 0;
         for (int i = 0; i < m; i++) {
-            while (d.getFirst() != arr[i]) {
-                cnt++;
-                int index = d.indexOf(arr[i]);
-                if (index < d.size() - index)
-                    d.add(d.poll());
-                else d.addFirst(d.pollLast());
+            int k = sc.nextInt();
+            if (l.indexOf(k) < l.size() - l.indexOf(k)) {
+                while (l.peek() != k) {
+                    l.add(l.poll());
+                    sum++;
+                }
+            } else {
+                while (l.peek() != k) {
+                    l.addFirst(l.removeLast());
+                    sum++;
+                }
             }
-            d.pollFirst();
+            l.poll();
         }
-        
-        System.out.print(cnt);
+        System.out.print(sum);
     }
 }
