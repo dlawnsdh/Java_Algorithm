@@ -16,6 +16,6 @@ class Solution {
                 visited[i] = 0;
             }
         }
-        if (sum > max) max = sum;
+        max = Math.max(max, sum);
     }
 }
