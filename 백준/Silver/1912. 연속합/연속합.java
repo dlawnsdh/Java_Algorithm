@@ -1,18 +1,17 @@
 import java.util.*;
+import java.io.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        int[] arr = new int[n];
-        int[] d = new int[n];
-        for (int i = 0; i < n; i++)
-            arr[i] = sc.nextInt();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(br.readLine());
+        String[] num = br.readLine().split(" ");
+        int[] dp = new int[n];
         
-        d[0] = arr[0];
+        dp[0] = Integer.parseInt(num[0]);
         for (int i = 1; i < n; i++)
-            d[i] += Math.max(0, d[i - 1]) + arr[i];
-        Arrays.sort(d);
-        System.out.print(d[n - 1]);
+            dp[i] = Integer.parseInt(num[i]) + Math.max(0, dp[i - 1]);
+        Arrays.sort(dp);
+        System.out.println(dp[n - 1]);
     }
 }
