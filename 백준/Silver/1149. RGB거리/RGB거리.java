@@ -1,21 +1,21 @@
-import java.util.*;
+import java.io.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        int[][] d = new int[n][3];
-        for (int i = 0; i < n; i++) {
-            int r = sc.nextInt(); int g = sc.nextInt(); int b = sc.nextInt();
-            d[i] = new int[] {r, g, b};
-        }
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(br.readLine());
+        int[][] dp = new int[1000][3];
         
+        String[] tmp = br.readLine().split(" ");
+        dp[0][0] = Integer.parseInt(tmp[0]);
+        dp[0][1] = Integer.parseInt(tmp[1]);
+        dp[0][2] = Integer.parseInt(tmp[2]);
         for (int i = 1; i < n; i++) {
-            d[i][0] += Math.min(d[i - 1][1], d[i - 1][2]);
-            d[i][1] += Math.min(d[i - 1][0], d[i - 1][2]);
-            d[i][2] += Math.min(d[i - 1][0], d[i - 1][1]);
+            String[] rgb = br.readLine().split(" ");
+            dp[i][0] = Integer.parseInt(rgb[0]) + Math.min(dp[i - 1][1], dp[i - 1][2]);
+            dp[i][1] = Integer.parseInt(rgb[1]) + Math.min(dp[i - 1][0], dp[i - 1][2]);
+            dp[i][2] = Integer.parseInt(rgb[2]) + Math.min(dp[i - 1][0], dp[i - 1][1]);
         }
-        int min = Math.min(Math.min(d[n - 1][0], d[n - 1][1]), d[n - 1][2]);
-        System.out.print(min);
+        System.out.print(Math.min(dp[n - 1][0], Math.min(dp[n - 1][1], dp[n - 1][2])));
     }
 }
