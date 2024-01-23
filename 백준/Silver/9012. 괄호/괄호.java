@@ -1,27 +1,22 @@
 import java.util.*;
+import java.io.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner s = new Scanner(System.in);
-        int t = Integer.parseInt(s.nextLine());
+    public static void main(String[] args) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int t = Integer.parseInt(br.readLine());
         
         for (int i = 0; i < t; i++) {
-            String str = s.nextLine();
             Stack<Character> st = new Stack<>();
+            String s = br.readLine();
             
-            for (int k = 0; k < str.length(); k++) {
-                if (str.charAt(k) == '(')
-                    st.push('(');
-                else {
-                    if (st.isEmpty())
-                        st.push(')');
-                    else if (st.peek() == '(')
-                        st.pop();
-                }
+            for (int k = 0; k < s.length(); k++) {
+                char c = s.charAt(k);
+                if (!st.isEmpty() && ((st.peek() == '(' && c == ')') || (st.peek() == '[' && c == ']')))
+                    st.pop();
+                else st.push(c);
             }
-            
-            if (st.isEmpty())
-                System.out.println("YES");
+            if (st.isEmpty()) System.out.println("YES");
             else System.out.println("NO");
         }
     }
