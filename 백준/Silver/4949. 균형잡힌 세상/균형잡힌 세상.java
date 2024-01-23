@@ -12,13 +12,11 @@ public class Main {
                 for (int i = 0; i < s.length(); i++) {
                     char c = s.charAt(i);
                     if (c == '(' || c == '[') st.push(c);
-                    if (c == ')') {
-                        if (!st.isEmpty() && st.peek() == '(') st.pop();
+                    else if (c == ')' || c == ']') {
+                        if (!st.isEmpty() && ((st.peek() == '(' && c == ')') || (st.peek() == '[' && c == ']')))
+                            st.pop();
                         else st.push(c);
-                    } else if (c == ']') {
-                        if (!st.isEmpty() && st.peek() == '[') st.pop();
-                        else st.push(c);
-                    } 
+                    }
                 }
                 if (st.isEmpty()) System.out.println("yes");
                 else System.out.println("no");
