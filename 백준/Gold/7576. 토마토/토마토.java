@@ -1,48 +1,52 @@
 import java.util.*;
+import java.io.*;
 
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        int m = sc.nextInt();
+        int n = sc.nextInt(); int m = sc.nextInt();
+        int[][] box = new int[m][n];
+        boolean[][] visited = new boolean[m][n];
         
-        int[][] map = new int[m][n];
-        Queue<Integer[]> q = new LinkedList<>();
-        int[][] dist = new int[m][n];
-        int[] dx = {-1, 1, 0, 0};
-        int[] dy = {0, 0, -1, 1};
+        int[] dx = {1, -1, 0, 0};
+        int[] dy = {0, 0, 1, -1};
+        
+        int zero = 0;
+        LinkedList<int[]> l = new LinkedList<>();
         for (int i = 0; i < m; i++)
             for (int k = 0; k < n; k++) {
-                map[i][k] = sc.nextInt();
-                if (map[i][k] == 1)
-                    q.add(new Integer[] {i, k});
-                else if (map[i][k] == 0)
-                    dist[i][k] = -1;
+                box[i][k] = sc.nextInt();
+                if (box[i][k] == 1)
+                    l.add(new int[] {i, k});
+                else if (box[i][k] == 0) zero++;
             }
         
-        while (!q.isEmpty()) {
-            int x = q.peek()[0];
-            int y = q.peek()[1];
-            q.poll();
-            for (int i = 0; i < 4; i++) {
-                int nx = x + dx[i];
-                int ny = y + dy[i];
-                if (nx < 0 || nx >= m || ny < 0 || ny >= n) continue;
-                if (dist[nx][ny] > -1) continue;
-                q.add(new Integer[] {nx, ny});
-                dist[nx][ny] = dist[x][y] + 1;
+        while (!l.isEmpty()) {
+            int[] xy = l.pop();
+            visited[xy[0]][xy[1]] = true;
+            for (int j = 0; j < 4; j++) {
+                int nx = dx[j] + xy[0];
+                int ny = dy[j] + xy[1];
+                if (nx >= m || nx < 0 || ny >= n || ny < 0)
+                    continue;
+                if (visited[nx][ny] || box[nx][ny] != 0)
+                    continue;
+                visited[nx][ny] = true;
+                l.add(new int[] {nx, ny});
+                box[nx][ny] = box[xy[0]][xy[1]] + 1;
             }
         }
-
+        
         int cnt = 0;
         for (int i = 0; i < m; i++)
             for (int k = 0; k < n; k++) {
-                if (dist[i][k] == -1) {
+                if (box[i][k] == 0) {
                     System.out.print(-1);
                     return;
                 }
-                cnt = Math.max(cnt, dist[i][k]);
+                cnt = Math.max(cnt, box[i][k]);
             }
-        System.out.print(cnt);
+        if (zero == 0) System.out.print(0); 
+        else System.out.print(cnt - 1);
     }
 }
