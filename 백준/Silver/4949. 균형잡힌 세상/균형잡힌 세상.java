@@ -1,30 +1,24 @@
 import java.util.*;
+import java.io.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         while (true) {
-            String s = sc.nextLine();
+            String s = br.readLine();
             if (s.equals(".")) break;
             else {
                 Stack<Character> st = new Stack<>();
                 for (int i = 0; i < s.length(); i++) {
-                    switch (s.charAt(i)) {
-                        case '(': st.push('(');
-                            break;
-                        case '[': st.push('[');
-                            break;
-                        case ')':
-                            if (!st.isEmpty() && st.peek() == '(')
-                                st.pop();
-                            else st.push(')');
-                            break;
-                        case ']':
-                            if (!st.isEmpty() && st.peek() == '[')
-                                st.pop();
-                            else st.push(']');
-                            break;
-                    }
+                    char c = s.charAt(i);
+                    if (c == '(' || c == '[') st.push(c);
+                    if (c == ')') {
+                        if (!st.isEmpty() && st.peek() == '(') st.pop();
+                        else st.push(c);
+                    } else if (c == ']') {
+                        if (!st.isEmpty() && st.peek() == '[') st.pop();
+                        else st.push(c);
+                    } 
                 }
                 if (st.isEmpty()) System.out.println("yes");
                 else System.out.println("no");
