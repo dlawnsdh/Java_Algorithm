@@ -3,46 +3,42 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        int m = sc.nextInt();
-        
-        Queue<Integer[]> q = new LinkedList<>();
+        int n = sc.nextInt(); int m = sc.nextInt();
         int[][] map = new int[n][m];
         boolean[][] visited = new boolean[n][m];
-        int[] dx = {-1, 1, 0, 0};
-        int[] dy = {0, 0, -1, 1};
         for (int i = 0; i < n; i++)
             for (int k = 0; k < m; k++)
                 map[i][k] = sc.nextInt();
         
+        int[] dx = {0, 0, 1, -1};
+        int[] dy = {1, -1, 0, 0};
+        LinkedList<int[]> q = new LinkedList<>();
         int max = 0;
         int cnt = 0;
         for (int i = 0; i < n; i++)
-            for (int k = 0; k < m; k++) 
-                if (map[i][k] == 1 && !visited[i][k]) {
-                    Integer[] arr = {i, k};
-                    q.add(arr);
+            for (int k = 0; k < m; k++) {
+                if (!visited[i][k] && map[i][k] == 1) {
+                    cnt++;
+                    q.add(new int[] {i, k});
                     visited[i][k] = true;
-                    int sum = 1;
-
                     while (!q.isEmpty()) {
-                        int x = q.peek()[0];
-                        int y = q.peek()[1];
-                        q.poll();
+                        int[] xy = q.poll();
                         for (int j = 0; j < 4; j++) {
-                            int nx = x + dx[j];
-                            int ny = y + dy[j];
-                            if (nx < 0 || nx >= n || ny < 0 || ny >= m) continue;
-                            if (visited[nx][ny] || map[nx][ny] == 0) continue;
+                            int nx = xy[0] + dx[j];
+                            int ny = xy[1] + dy[j];
+                            if (nx < 0 || nx >= n || ny < 0 || ny >= m)
+                                continue;
+                            if (visited[nx][ny] || map[nx][ny] == 0)
+                                continue;
                             visited[nx][ny] = true;
-                            q.add(new Integer[] {nx, ny});
-                            sum++;
+                            map[i][k]++;
+                            q.add(new int[] {nx, ny});
                         }
                     }
-                    max = Math.max(max, sum);
-                    if (sum != 0)
-                        cnt++;
                 }
-        System.out.print(cnt + "\n" + max);
+                max = Math.max(max, map[i][k]);
+            }
+        System.out.println(cnt);
+        System.out.println(max);
     }
 }
