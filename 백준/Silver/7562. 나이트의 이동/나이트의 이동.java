@@ -1,42 +1,39 @@
 import java.util.*;
+import java.io.*;
 
 public class Main {
-     public static void main(String[] args) {
-         Scanner sc = new Scanner(System.in);
-         int t = sc.nextInt();
-         int[][] d = {{-2, -1}, {-1, -2}, {2, -1}, {1, -2}, 
-                      {-2, 1}, {-1, 2}, {2, 1}, {1, 2}};
-         
-         for (int k = 0; k < t; k++) {
-             Queue<Integer[]> q = new LinkedList<>();
-             int n = sc.nextInt();
-             int sx = sc.nextInt(); int sy = sc.nextInt();
-             int gx = sc.nextInt(); int gy = sc.nextInt();
-             int[][] dist = new int[n][n];
-             
-             if (sx == gx && sy == gy) {
-                System.out.println(0);
-                continue;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int t = Integer.parseInt(br.readLine());
+        
+        int[] dx = {-2, -2, -1, -1, 1, 1, 2, 2};
+        int[] dy = {-1, 1, 2, -2, -2, 2, 1, -1};
+        for (int i = 0; i < t; i++) {
+            LinkedList<int[]> q = new LinkedList<>();
+            int n = Integer.parseInt(br.readLine());
+            String[] start = br.readLine().split(" ");
+            String[] end = br.readLine().split(" ");
+            int[][] dist = new int[n][n];
+            for (int k = 0; k < n; k++)
+                Arrays.fill(dist[k], -1);
+            
+            dist[Integer.parseInt(start[0])][Integer.parseInt(start[1])] = 0;
+            q.add(new int[] {Integer.parseInt(start[0]), Integer.parseInt(start[1])});
+            while (!q.isEmpty()) {
+                int[] cur = q.poll();
+                if (cur[0] == Integer.parseInt(end[0]) && cur[1] == Integer.parseInt(end[1])) {
+                    System.out.println(dist[cur[0]][cur[1]]);
+                    break;
+                }
+                for (int k = 0; k < 8; k++) {
+                    int nx = cur[0] + dx[k];
+                    int ny = cur[1] + dy[k];
+                    if (nx < 0 || nx >= n || ny < 0 || ny >= n) continue;
+                    if (dist[nx][ny] >= 0) continue;
+                    dist[nx][ny] = dist[cur[0]][cur[1]] + 1;
+                    q.add(new int[] {nx, ny});
+                }
             }
-             
-             q.add(new Integer[] {sx, sy});
-             while (!q.isEmpty()) {
-                 int x = q.peek()[0];
-                 int y = q.peek()[1];
-                 q.poll();
-                 for (int i = 0; i < 8; i++) {
-                     int nx = x + d[i][0];
-                     int ny = y + d[i][1];
-                     if (nx < 0 || nx >= n || ny < 0 || ny >= n) continue;
-                     if (dist[nx][ny] > 0) continue;
-                     dist[nx][ny] = dist[x][y] + 1;
-                     q.add(new Integer[] {nx, ny});
-                     if (nx == gx && ny == gy) {
-                         System.out.println(dist[nx][ny]);
-                         break;
-                     }
-                 }
-             }
-         }
-     }
+        }
+    }
 }
