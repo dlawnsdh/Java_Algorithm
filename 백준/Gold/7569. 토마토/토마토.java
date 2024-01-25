@@ -1,55 +1,55 @@
 import java.util.*;
+import java.io.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int m = sc.nextInt();
-        int n = sc.nextInt();
-        int h = sc.nextInt();
-        int[][][] map = new int[h][n][m];
+    public static void main(String[] args) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int m = Integer.parseInt(st.nextToken()); 
+        int n = Integer.parseInt(st.nextToken()); 
+        int h = Integer.parseInt(st.nextToken());
+        int[][][] box = new int[h][n][m];
         int[][][] dist = new int[h][n][m];
-        int[] dx = {1, -1, 0, 0, 0, 0};
-        int[] dy = {0, 0, 1, -1, 0, 0};
-        int[] dz = {0, 0, 0, 0, 1, -1};
-        
-        Queue<Integer[]> q = new LinkedList<>();
+        LinkedList<int[]> q = new LinkedList<>();
         for (int i = 0; i < h; i++)
-            for (int k = 0; k < n; k++)
+            for (int k = 0; k < n; k++) {
+                st = new StringTokenizer(br.readLine());
                 for (int j = 0; j < m; j++) {
-                    map[i][k][j] = sc.nextInt();
-                    if (map[i][k][j] == 1)
-                        q.add(new Integer[] {i, k, j});
-                    if (map[i][k][j] == 0)
-                        dist[i][k][j] = -1;
+                    dist[i][k][j] = -1;
+                    box[i][k][j] = Integer.parseInt(st.nextToken());
+                    if (box[i][k][j] == 1) {
+                        q.add(new int[] {k, j, i});
+                        dist[i][k][j] = 0;
+                    }
                 }
+            }
         
+        int[] dx = {0, 0, 1, -1, 0, 0};
+        int[] dy = {1, -1, 0, 0, 0, 0};
+        int[] dz = {0, 0, 0, 0, 1, -1};
+        int max = 0;
         while (!q.isEmpty()) {
-            int x = q.peek()[1];
-            int y = q.peek()[2];
-            int z = q.peek()[0];
-            q.poll();
+            int[] cur = q.poll();
             for (int i = 0; i < 6; i++) {
-                int nx = x + dx[i];
-                int ny = y + dy[i];
-                int nz = z + dz[i];
-                if (nx < 0 || nx >= n || ny < 0 || ny >= m || nz < 0 || nz >= h) 
-                    continue;
-                if (dist[nz][nx][ny] > -1) continue;
-                dist[nz][nx][ny] = dist[z][x][y] + 1;
-                q.add(new Integer[]{nz, nx, ny});
+                int nx = cur[0] + dx[i];
+                int ny = cur[1] + dy[i];
+                int nz = cur[2] + dz[i];
+                if (nx < 0 || nx >= n || ny < 0 || ny >= m || nz < 0 || nz >= h) continue;
+                if (dist[nz][nx][ny] >= 0 || box[nz][nx][ny] == -1) continue;
+                dist[nz][nx][ny] = dist[cur[2]][cur[0]][cur[1]] + 1;
+                max = Math.max(max, dist[nz][nx][ny]);
+                q.add(new int[] {nx, ny, nz});
             }
         }
         
-        int cnt = 0;
         for (int i = 0; i < h; i++)
             for (int k = 0; k < n; k++)
                 for (int j = 0; j < m; j++) {
-                    if (dist[i][k][j] == -1) {
+                    if (dist[i][k][j] == -1 && box[i][k][j] == 0) {
                         System.out.print(-1);
                         return;
                     }
-                    cnt = Math.max(cnt, dist[i][k][j]);
                 }
-        System.out.print(cnt);
+        System.out.print(max);
     }
 }
