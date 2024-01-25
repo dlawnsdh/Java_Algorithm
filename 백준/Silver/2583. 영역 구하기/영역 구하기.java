@@ -1,50 +1,52 @@
 import java.util.*;
+import java.io.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        Queue<Integer[]> q = new LinkedList<>();
-        int m = sc.nextInt(); int n = sc.nextInt(); int k = sc.nextInt();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int m = Integer.parseInt(st.nextToken());
+        int n = Integer.parseInt(st.nextToken());
+        int k = Integer.parseInt(st.nextToken());
         int[][] map = new int[m][n];
         boolean[][] visited = new boolean[m][n];
-        int[] dx = {0, 0, -1, 1};
-        int[] dy = {-1, 1, 0, 0};
-        
         for (int i = 0; i < k; i++) {
-            int x1 = sc.nextInt(); int y2 = m - sc.nextInt();
-            int x2 = sc.nextInt(); int y1 = m - sc.nextInt();
-            for (int a = y1; a < y2; a++)
-                for (int b = x1; b < x2; b++)
-                    map[a][b] = 1;
+            st = new StringTokenizer(br.readLine());
+            int[] l = {Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken())};
+            int[] r = {Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken())};
+            for (int j = l[1]; j < r[1]; j++)
+                for (int h = l[0]; h < r[0]; h++)
+                    map[j][h] = 1;
         }
         
         int cnt = 0;
+        int[] dx = {0, 0, -1, 1};
+        int[] dy = {1, -1, 0, 0};
+        LinkedList<int[]> q = new LinkedList<>();
         List<Integer> l = new ArrayList<>();
         for (int i = 0; i < m; i++)
-            for (int j = 0; j < n; j++)
-                if (map[i][j] == 0 && !visited[i][j]) {
-                    q.add(new Integer[] {i, j});
-                    int sum = 0;
+            for (int j = 0; j < n; j++) {
+                if (!visited[i][j] && map[i][j] == 0) {
+                    cnt++;
+                    visited[i][j] = true;
+                    q.add(new int[] {i, j});
                     while (!q.isEmpty()) {
-                        int x = q.peek()[1];
-                        int y = q.peek()[0];
-                        q.poll();
+                        int[] cur = q.poll();
                         for (int h = 0; h < 4; h++) {
-                            int nx = x + dx[h];
-                            int ny = y + dy[h];
-                            if (nx < 0 || nx >= n || ny < 0 || ny >= m) continue;
-                            if (map[ny][nx] == 1 || visited[ny][nx]) continue;
-                            q.add(new Integer[] {ny, nx});
-                            visited[ny][nx] = true;
-                            sum++;
+                            int nx = cur[0] + dx[h];
+                            int ny = cur[1] + dy[h];
+                            if (nx < 0 || nx >= m || ny < 0 || ny >= n) continue;
+                            if (visited[nx][ny] || map[nx][ny] == 1) continue;
+                            visited[nx][ny] = true;
+                            map[i][j]++;
+                            q.add(new int[] {nx, ny});
                         }
                     }
-                    if (sum == 0) sum = 1;
-                    l.add(sum);
-                    cnt++;
+                    l.add(map[i][j] + 1);
                 }
-        System.out.println(cnt);
+            }
         Collections.sort(l);
-        for (int i : l) System.out.print(i + " ");
+        System.out.println(cnt);
+        l.forEach(i -> System.out.print(i + " "));
     }
 }
