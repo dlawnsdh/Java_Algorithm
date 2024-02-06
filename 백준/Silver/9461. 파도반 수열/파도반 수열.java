@@ -1,18 +1,16 @@
-import java.util.*;
+import java.io.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int t = sc.nextInt();
-        for (int k = 0; k < t; k++) {
-            int n = sc.nextInt();
-            long[] d = new long[n];
-            for (int i = 0; i < n; i++) {
-                if (i == 0 || i == 1 || i == 2) d[i] = 1;
-                else if (i == 3 || i == 4) d[i] = 2;
-                else d[i] = d[i - 1] + d[i - 5];
-            }
-            System.out.println(d[n - 1]);
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int t = Integer.parseInt(br.readLine());
+        for (int i = 0; i < t; i++) {
+            int n = Integer.parseInt(br.readLine());
+            long[] dp = new long[101];
+            dp[1] = 1; dp[2] = 1; dp[3] = 1; dp[4] = 2; dp[5] = 2;
+            for (int k = 6; k <= n; k++) 
+                dp[k] = dp[k - 1] + dp[k - 5];
+            System.out.println(dp[n]);
         }
     }
 }
