@@ -1,20 +1,23 @@
 import java.util.*;
+import java.io.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        int[] arr = new int[n];
-        int[] d = new int[n];
-        for (int i = 0; i < n; i++)
-            arr[i] = sc.nextInt();
-        Arrays.fill(d, 1);
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(br.readLine());
+        int[] arr = new int[n + 1];
+        int[] dp = new int[n + 1];
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        for (int i = 1; i <= n; i++)
+            arr[i] = Integer.parseInt(st.nextToken());
         
-        for (int i = 1; i < n; i++) 
-            for (int k = 0; k < i; k++)
-                if (arr[k] < arr[i])
-                    d[i] = Math.max(d[i], d[k] + 1);
-        Arrays.sort(d);
-        System.out.print(d[n - 1]);
+        for (int i = 1; i <= n; i++) {
+            dp[i] = 1;
+            for (int k = 1; k < i; k++)
+                if (arr[i] > arr[k])
+                    dp[i] = Math.max(dp[k] + 1, dp[i]);
+        }
+        Arrays.sort(dp);
+        System.out.print(dp[n]);
     }
 }
