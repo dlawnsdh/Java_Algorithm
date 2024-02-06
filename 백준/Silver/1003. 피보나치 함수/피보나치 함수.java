@@ -1,17 +1,18 @@
-import java.util.Scanner;
+import java.util.*;
+import java.io.*;
+
 public class Main {
-    public static void main(String[] args) {
-        Scanner s = new Scanner(System.in);
-        int n = s.nextInt();
-        int[] d = new int[41];
-        d[0] = 0; d[1] = 1; d[2] = 1;
-        for (int i = 3; i <= 40; i++)
-            d[i] = d[i - 1] + d[i - 2];
-        for (int i = 0; i < n; i++) {
-            int k = s.nextInt();
-            if (k == 0) System.out.println("1 0");
-            else if (k == 1) System.out.println("0 1");
-            else System.out.printf("%d %d\n", d[k - 1], d[k]);
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int t = Integer.parseInt(br.readLine());
+        for (int i = 0; i < t; i++) {
+            int n = Integer.parseInt(br.readLine());
+            int[][] dp = new int[41][2];
+            dp[0] = new int[] {1, 0};
+            dp[1] = new int[] {0, 1};
+            for (int k = 2; k <= n; k++)
+                dp[k] = new int[] {dp[k - 1][0] + dp[k - 2][0], dp[k - 1][1] + dp[k - 2][1]};
+            System.out.println(dp[n][0] + " " + dp[n][1]);
         }
     }
 }
