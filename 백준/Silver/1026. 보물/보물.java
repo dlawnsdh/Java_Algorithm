@@ -1,23 +1,24 @@
 import java.util.*;
+import java.io.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner s = new Scanner(System.in);
-        int n = s.nextInt();
-        int[] a = new int[n];
-        int[] b = new int[n];
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(br.readLine());
+        int[] arr1 = new int[n];
+        int[] arr2 = new int[n];
+        StringTokenizer st = new StringTokenizer(br.readLine());
         for (int i = 0; i < n; i++)
-            a[i] = s.nextInt();
+            arr1[i] = Integer.parseInt(st.nextToken());
+        st = new StringTokenizer(br.readLine());
         for (int i = 0; i < n; i++)
-            b[i] = s.nextInt();
+            arr2[i] = Integer.parseInt(st.nextToken());
         
-        Arrays.sort(a);
-        Arrays.sort(b);
-        
+        Arrays.sort(arr1);
+        Arrays.sort(arr2);
         int sum = 0;
-        for (int i = n - 1; i > -1; i--)
-            sum += a[i] * b[n - 1 - i];
-        
+        for (int i = 0; i < n; i++)
+            sum += arr1[i] * arr2[n - i - 1];
         System.out.print(sum);
     }
 }
