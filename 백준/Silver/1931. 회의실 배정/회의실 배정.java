@@ -5,29 +5,25 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
-        List<Integer[]> l = new ArrayList<>();
+        int[][] arr = new int[n][2];
         for (int i = 0; i < n; i++) {
-            String[] arr = br.readLine().split(" ");
-            l.add(new Integer[] {Integer.parseInt(arr[0]), Integer.parseInt(arr[1])});
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            arr[i][0] = Integer.parseInt(st.nextToken());
+            arr[i][1] = Integer.parseInt(st.nextToken());
         }
         
-        Collections.sort(l, new Comparator<Integer[]>() {
-            @Override
-            public int compare(Integer[] o1, Integer[] o2) {
-                if (o1[1].equals(o2[1]))
-                    return o1[0].compareTo(o2[0]);
-                return o1[1].compareTo(o2[1]);
-            }
+        Arrays.sort(arr, (arr1, arr2) -> {
+            if (arr1[1] == arr2[1])
+                return Integer.compare(arr1[0], arr2[0]);
+            else return Integer.compare(arr1[1], arr2[1]);
         });
-        
-        int cnt = 1;
-        int index = 0;
-        for (int i = index + 1; i < n; i++)
-            if (l.get(index)[1] <= l.get(i)[0]) {
+        int end = 0;
+        int cnt = 0;
+        for (int i = 0; i < n; i++)
+            if (arr[i][0] >= end) {
                 cnt++;
-                index = i;
+                end = arr[i][1];
             }
-        
         System.out.print(cnt);
     }
 }
