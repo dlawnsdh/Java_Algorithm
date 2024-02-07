@@ -2,29 +2,24 @@ import java.util.*;
 
 class Solution {
     public int solution(String dirs) {
-        int[] from = {0, 0};
-        int[] to = new int[2];
         Set<String> visited = new HashSet<>();
-        
-        for (int i = 0; i < dirs.length(); i++) {
-            if (dirs.charAt(i) == 'U' && from[1] + 1 < 6) {
-                to = new int[] {from[0], from[1] + 1};
-            } else if (dirs.charAt(i) == 'D' && from[1] - 1 > -6) {
-                to = new int[] {from[0], from[1] - 1};
-            } else if (dirs.charAt(i) == 'L' && from[0] - 1 > -6) {
-                to = new int[] {from[0] - 1, from[1]};
-            } else if (dirs.charAt(i) == 'R' && from[0] + 1 < 6) {
-                to = new int[] {from[0] + 1, from[1]};
-            } else to = new int[] {from[0], from[1]};
+        int[] from = {0, 0};
+        int[][] dir = {{0, 1}, {0, -1}, {-1, 0}, {1, 0}};
             
-            StringBuilder fromTo = new StringBuilder();
-            StringBuilder reverseFromTo = new StringBuilder();
-            fromTo.append(from[0]).append(from[1]).append(to[0]).append(to[1]);
-            reverseFromTo.append(to[0]).append(to[1]).append(from[0]).append(from[1]);
-            if (from[0] == to[0] && from[1] == to[1])
+        for (int i = 0; i < dirs.length(); i++) {
+            int[] to = switch (dirs.charAt(i)) {
+                case 'U' -> new int[] {from[0], from[1] + 1};
+                case 'D' -> new int[] {from[0], from[1] - 1};
+                case 'L' -> new int[] {from[0] - 1, from[1]};
+                case 'R' -> new int[] {from[0] + 1, from[1]};   
+                default -> new int[] {from[0], from[1]};
+            };
+            if (to[0] < -5 || to[0] > 5 || to[1] < -5 || to[1] > 5) 
                 continue;
-            if (!visited.contains(fromTo.toString()) && !visited.contains(reverseFromTo.toString()))
-                visited.add(fromTo.toString());
+            String fromTo = String.format("%d%d%d%d", from[0], from[1], to[0], to[1]); 
+            String toFrom = String.format("%d%d%d%d", to[0], to[1], from[0], from[1]); 
+            if (!visited.contains(fromTo) && !visited.contains(toFrom))
+                visited.add(fromTo);
             from = new int[] {to[0], to[1]};
         }
         return visited.size();
