@@ -9,15 +9,13 @@ class Solution {
         long result = 0;
         
         if (sum <= 0) return result;
-        else {
-            while (idx1 > 0) {
-                int t = sum / idx1 > works[idx2] ? works[idx2] : sum / idx1;
-                result += t * t;
-                sum -= t;
-                idx1--;
-                idx2++;
-            }
-            return result;
+        while (idx1 > 0) {
+            int t = sum / idx1 > works[idx2] ? works[idx2] : sum / idx1;
+            result += t * t;
+            sum -= t;
+            idx1--;
+            idx2++;
         }
+        return result;
     }
 }
