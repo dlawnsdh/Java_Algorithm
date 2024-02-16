@@ -1,16 +1,13 @@
 import java.util.*;
-import java.util.*;
 
 class Solution {
-    int max = 0;
-    
     public int solution(int n, int[][] edge) {
         List<List<Integer>> g = new ArrayList<>();
         for (int i = 0; i <= n; i++)
             g.add(new ArrayList<>());
-        for (int i = 0; i < edge.length; i++) {
-            g.get(edge[i][0]).add(edge[i][1]);
-            g.get(edge[i][1]).add(edge[i][0]);
+        for (int[] arr : edge) {
+            g.get(arr[0]).add(arr[1]);
+            g.get(arr[1]).add(arr[0]);
         }
         
         LinkedList<Integer> q = new LinkedList<>();
@@ -24,11 +21,11 @@ class Solution {
                 int x = g.get(cur).get(i);
                 if (dist[x] >= 0) continue;
                 dist[x] = dist[cur] + 1;
-                max = Math.max(max, dist[x]);
                 q.add(x);
             }
         }
         
-        return (int) Arrays.stream(dist).filter(i -> i == max).count();
+        Arrays.sort(dist);
+        return (int) Arrays.stream(dist).filter(i -> i == dist[n]).count();
     }
 }
