@@ -5,10 +5,10 @@ class Solution {
         List<Music> l = new ArrayList<>();
         Map<String, Integer> total = new HashMap<>();
         Map<String, Integer> including = new HashMap<>();
-        for (int i = 0; i < genres.length; i++)
+        for (int i = 0; i < genres.length; i++) {
             total.put(genres[i], total.getOrDefault(genres[i], 0) + plays[i]);
-        for (int i = 0; i < genres.length; i++)
             l.add(new Music(genres[i], i, plays[i]));
+        }
         
         l.sort((m1, m2) -> {
             if (total.get(m1.getGenre()) == total.get(m2.getGenre()))
