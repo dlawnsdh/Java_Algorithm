@@ -7,17 +7,14 @@ class Solution {
                return -Integer.compare(arr1[0], arr2[0]);
             return Integer.compare(arr1[col - 1], arr2[col - 1]);
         });
-        
-        int[] arr = new int[data.length];
+
         int xor = 0;
-        for (int i = 0; i < data.length; i++) {
+        for (int i = row_begin - 1; i < row_end; i++) {
             int sum = 0;
             for (int k = 0; k < data[i].length; k++)
                 sum += data[i][k] % (i + 1);
-            arr[i] = sum;
+            xor = xor ^ sum;
         }
-        for (int i = row_begin - 1; i < row_end; i++)
-            xor = xor ^ arr[i];
         return xor;
     }
 }
