@@ -2,19 +2,17 @@ import java.util.*;
 import java.util.stream.*;
 
 class Solution {
-    List<Set<String>> l = new ArrayList<>();
+    Set<Set<String>> s = new HashSet<>();
     int count = 0;
     
     public int solution(String[] user_id, String[] banned_id) {
         permutation(user_id, banned_id, new String[banned_id.length], new boolean[user_id.length], banned_id.length, 0, 0);
-        return l.size();
+        return s.size();
     }
     
     public void permutation(String[] u, String[] b, String[] result, boolean[] visited, int d, int k, int idx) {
         if (d == k) {
-            Set<String> set = Arrays.stream(result).collect(Collectors.toSet());
-            if (!l.contains(set)) 
-                l.add(set);
+            s.add(Arrays.stream(result).collect(Collectors.toSet()));
             return;
         }
         for (int i = 0; i < u.length; i++)
