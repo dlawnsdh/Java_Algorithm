@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.*;
 
 class Solution {
     List<Set<String>> l = new ArrayList<>();
@@ -11,10 +12,8 @@ class Solution {
     
     public void permutation(String[] u, String[] b, String[] result, boolean[] visited, int d, int k, int idx) {
         if (d == k) {
-            Set<String> set = new HashSet<>();
-            for (int i = 0; i < result.length; i++)
-                set.add(result[i]);
-            if (!l.contains(set))
+            Set<String> set = Arrays.stream(result).collect(Collectors.toSet());
+            if (!l.contains(set)) 
                 l.add(set);
             return;
         }
