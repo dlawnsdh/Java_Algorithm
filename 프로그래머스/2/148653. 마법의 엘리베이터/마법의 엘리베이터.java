@@ -14,8 +14,8 @@ class Solution {
         
         int t = (int) Math.pow(10, arr.length - idx);
         return Math.min(
-            dfs(n - (t / 10 * arr[idx]), idx - 1, cnt + (arr[idx])), 
-            dfs(n + t - (t / 10 * arr[idx]), idx - 1, cnt + (10 - (arr[idx])))
+            dfs(n - (t / 10 * arr[idx]), idx - 1, cnt + arr[idx]), 
+            dfs(n + t - (t / 10 * arr[idx]), idx - 1, cnt + (10 - arr[idx]))
         );
     }
 }
