@@ -17,14 +17,15 @@ class Solution {
             
             int idx = k % t == 0 ? (int) (k / t) : (int) (k / t + 1);
             long r = k % t;
-            arr[index++] = l.get(idx - 1);
-            l.remove(idx - 1);
+            arr[index++] = l.remove(idx - 1);
             
-            if (r == 0) break;
+            if (r == 0) {
+                for (int i = l.size() - 1; i >= 0; i--)
+                    arr[index++] = l.get(i);
+                break;
+            }
             else k = r;
         }
-        for (int i = l.size() - 1; i >= 0; i--)
-            arr[index++] = l.get(i);
         return arr;
     }
 }
