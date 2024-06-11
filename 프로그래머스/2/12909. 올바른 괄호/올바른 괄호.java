@@ -4,13 +4,13 @@ class Solution {
     boolean solution(String s) {
         Stack<Character> st = new Stack<>();
         for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) == '(') st.push('(');
-            else {
-                if (st.isEmpty()) return false;
-                else if (st.peek() == '(') st.pop();
-            }
+            if (st.isEmpty() && s.charAt(i) == ')')
+                return false;
+            if (st.isEmpty() || !(st.peek() == '(' && s.charAt(i) == ')'))
+                st.push(s.charAt(i));
+            else st.pop();
         }
-        if (st.isEmpty()) return true;
-        else return false;
+        
+        return st.isEmpty() ? true : false;
     }
 }
