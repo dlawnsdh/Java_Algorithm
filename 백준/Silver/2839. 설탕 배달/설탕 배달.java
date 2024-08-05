@@ -1,19 +1,25 @@
-import java.util.Scanner;
+import java.util.*;
+import java.io.*;
+
 public class Main {
-    static int div(int n) {
-        if (n % 5 == 0)
-            return n / 5;
-        for (int i = n % 5; i < n; i += 5)
-            if (i % 3 == 0)
-                return i / 3 + (n - i) / 5;
-
-        if (n % 3 == 0) return n / 3;
-        return -1;
-    }
-
-    public static void main(String[] args) {
-        Scanner s = new Scanner(System.in);
-        int n = s.nextInt();
-        System.out.println(div(n));
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(br.readLine());
+        int[] dp = new int[5001];
+        
+        dp[3] = 1;
+        dp[5] = 1;
+        for (int i = 6; i <= n; i++) {
+            if (i % 5 == 0)
+                dp[i] = dp[i - 5] + 1;
+            else if (i % 3 == 0)
+                dp[i] = dp[i - 3] + 1;
+            else {
+                if (dp[i - 3] != 0 && dp[i - 5] != 0)
+                    dp[i] = Math.min(dp[i - 3] , dp[i - 5]) + 1;
+            }
+        }
+        if (dp[n] == 0) System.out.print(-1);
+        else System.out.print(dp[n]);
     }
 }
