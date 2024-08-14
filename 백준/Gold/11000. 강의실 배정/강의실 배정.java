@@ -18,14 +18,9 @@ public class Main {
         
         PriorityQueue<Integer> pq = new PriorityQueue<>();
         for (int i = 0; i < n; i++) {
-            if (pq.isEmpty()) pq.add(arr[i][1]);
-            else {
-                if (pq.peek() > arr[i][0]) pq.add(arr[i][1]);
-                else {
-                    pq.poll();
-                    pq.add(arr[i][1]);
-                }
-            }
+            if (!pq.isEmpty() && pq.peek() <= arr[i][0])
+                pq.poll();
+            pq.add(arr[i][1]);
         }
         System.out.print(pq.size());
     }
