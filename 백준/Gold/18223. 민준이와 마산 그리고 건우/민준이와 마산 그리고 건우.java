@@ -2,20 +2,20 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-    static List<List<int[]>> g = new ArrayList<>();
+    static List<int[]>[] g;
     static int INF = 1000000000;
     
     static int dijkstra(int st, int en) {
         PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]);
-        int[] dist = new int[g.size()];
+        int[] dist = new int[g.length];
         Arrays.fill(dist, INF);
         
         dist[st] = 0;
         pq.add(new int[] {st, 0});
         while (!pq.isEmpty()) {
             int[] cur = pq.poll();
-            for (int i = 0; i < g.get(cur[0]).size(); i++) {
-                int[] nx = g.get(cur[0]).get(i);
+            for (int i = 0; i < g[cur[0]].size(); i++) {
+                int[] nx = g[cur[0]].get(i);
                 if (dist[nx[0]] > dist[cur[0]] + nx[1]) {
                     dist[nx[0]] = dist[cur[0]] + nx[1];
                     pq.add(new int[] {nx[0], dist[nx[0]]});
@@ -31,15 +31,16 @@ public class Main {
         int v = Integer.parseInt(st.nextToken());
         int e = Integer.parseInt(st.nextToken());
         int p = Integer.parseInt(st.nextToken());
-        for (int i = 0; i <= v; i++)
-            g.add(new ArrayList<>());
+        g = new ArrayList[v + 1];
+        for (int i = 1; i <= v; i++)
+            g[i] = new ArrayList<>();
         for (int i = 0; i < e; i++) {
             st = new StringTokenizer(br.readLine());
             int a = Integer.parseInt(st.nextToken());
             int b = Integer.parseInt(st.nextToken());
             int c = Integer.parseInt(st.nextToken());
-            g.get(a).add(new int[] {b, c});
-            g.get(b).add(new int[] {a, c});
+            g[a].add(new int[] {b, c});
+            g[b].add(new int[] {a, c});
         }
         
         int s2e = dijkstra(1, v);
