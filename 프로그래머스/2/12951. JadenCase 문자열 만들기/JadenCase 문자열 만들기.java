@@ -1,14 +1,12 @@
 class Solution {
     public String solution(String s) {
-        StringBuilder b = new StringBuilder();
-        char[] arr = (" " + s).toLowerCase().toCharArray();
-        
-        for (int i = 1; i < arr.length; i++) {
-            if (Character.isAlphabetic(arr[i]) && arr[i - 1] == ' ')
-                arr[i] -= 32;
-            b.append(arr[i]);
+        StringBuilder sb = new StringBuilder();
+        s = (" " + s).toLowerCase();
+        for (int i = 1; i < s.length(); i++) {
+            if (s.charAt(i - 1) == ' ' && Character.isAlphabetic(s.charAt(i)))
+                sb.append((char) (s.charAt(i) - 32));
+            else sb.append(s.charAt(i));
         }
-        
-        return b.toString();
+        return sb.toString();
     }
 }
