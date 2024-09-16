@@ -1,15 +1,16 @@
 import java.util.*;
 
 class Solution {
-    public int[] solution(String s) {
-        int cnt = 0;
-        int sum = 0;
-        while (s.length() > 1) {
-            for (int i = 0; i < s.length(); i++)
-                if (s.charAt(i) == '0') sum++;
-            s = Integer.toBinaryString(s.replaceAll("0", "").length());
-            cnt++;
+    int[] remeveZero(String s, int cnt, int num) {
+        if (s.equals("1")) return new int[] {cnt, num};
+        else {
+            String r0 = s.replaceAll("0", "");
+            int zero = s.length() - r0.length();
+            return remeveZero(Integer.toBinaryString(r0.length()), cnt + 1, num + zero);    
         }
-        return new int[] {cnt, sum};
+    }
+    
+    public int[] solution(String s) {
+        return remeveZero(s, 0, 0);
     }
 }
