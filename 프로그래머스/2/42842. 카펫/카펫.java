@@ -1,13 +1,15 @@
 class Solution {
     public int[] solution(int brown, int yellow) {
-        int cnt = brown - 4;
-        int w = 0; int h = 0;
-        for (int i = 1; i <= Math.sqrt(yellow); i++)
-            if (yellow % i == 0 && cnt == i * 2 + yellow / i * 2) {
-                w = yellow / i + 2;
-                h = i + 2;
+        int h = 0;
+        int w = yellow;
+        while (h <= w) {
+            h++;
+            w = yellow / h;
+            if (yellow % h != 0) 
+                continue;
+            if (w * 2 + h * 2 + 4 == brown) 
                 break;
-            }
-        return new int[] {w, h};
+        }
+        return new int[] {w + 2, h + 2};
     }
 }
