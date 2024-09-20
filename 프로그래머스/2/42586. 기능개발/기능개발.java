@@ -1,24 +1,32 @@
 import java.util.*;
+import java.util.stream.*;
 
 class Solution {
     public int[] solution(int[] progresses, int[] speeds) {
-        LinkedList<Integer> q = new LinkedList<>();
-        for (int i = 0; i < progresses.length; i++) 
-            q.add((100 - progresses[i]) % speeds[i] == 0 ? (100 - progresses[i]) / speeds[i] : (100 - progresses[i]) / speeds[i] + 1);
+        int[] rest = IntStream.range(0, progresses.length)
+            .map(i -> {
+                int r = 100 - progresses[i];
+                return r % speeds[i] == 0 ? r / speeds[i] : r / speeds[i] + 1;
+            })
+            .toArray();
         
         List<Integer> l = new ArrayList<>();
-        int max = q.poll();
-        int cnt = 1;
-        if (q.isEmpty()) return new int[] {cnt};
-        while (!q.isEmpty()) {
-            int cur = q.poll();
-            if (max < cur) {
-                max = cur;
-                l.add(cnt);
-                cnt = 1;
-            } else cnt++;
+        Stack<Integer> st = new Stack<>();
+        int max = rest[0];
+        st.push(rest[0]);
+        for (int i = 1; i < rest.length; i++) {
+            if (st.isEmpty() || max >= rest[i])
+                st.push(rest[i]);
+            else {
+                int cnt = 0;
+                l.add(st.size());
+                while (!st.isEmpty())
+                    st.pop();
+                st.push(rest[i]);
+                max = rest[i];
+            }
         }
-        l.add(cnt);
+        l.add(st.size());
         return l.stream().mapToInt(Integer::intValue).toArray();
     }
 }
