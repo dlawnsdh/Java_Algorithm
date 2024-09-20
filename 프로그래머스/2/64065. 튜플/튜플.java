@@ -1,22 +1,20 @@
 import java.util.*;
-import java.util.stream.Collectors;
 
 class Solution {
     public int[] solution(String s) {
-        Set<String> set = new HashSet<>();
-        s = s.substring(2, s.length() - 2);
-        String[] arr = (s.split("}.\\{"));
-        Arrays.sort(arr, (s1, s2) -> Integer.compare(s1.length(), s2.length()));
+        int[][] arr = Arrays.stream(s.substring(2, s.length() - 2).split("},\\{"))
+            .map(str -> {
+                return Arrays.stream(str.split(","))
+                    .mapToInt(Integer::parseInt)
+                    .toArray();
+            })
+            .toArray(int[][]::new);
+        Arrays.sort(arr, (a, b) -> a.length - b.length);
         
-        List<String> l = new ArrayList<>();
-        for (int i = 0; i < arr.length; i++) {
-            String[] tmp = arr[i].split(",");
-            for (int k = 0; k < tmp.length; k++)
-                if (!set.contains(tmp[k])) {
-                    set.add(tmp[k]);
-                    l.add(tmp[k]);
-                }
-        }
-        return l.stream().mapToInt(Integer::parseInt).toArray();
+        Set<Integer> tuple = new LinkedHashSet<>();
+        for (int[] a : arr)
+            for (int i : a)
+                tuple.add(i);
+        return tuple.stream().mapToInt(Integer::intValue).toArray();
     }
 }
