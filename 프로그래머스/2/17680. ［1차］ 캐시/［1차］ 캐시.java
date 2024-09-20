@@ -2,27 +2,25 @@ import java.util.*;
 
 class Solution {
     public int solution(int cacheSize, String[] cities) {
-        LinkedList<String> q = new LinkedList<>();
-        Set<String> s = new HashSet<>();
+        if (cacheSize == 0)
+            return cities.length * 5;
         
-        if (cacheSize == 0) return cities.length * 5;
-        int cnt = 0;
-        for (int i = 0; i < cities.length; i++) {
-            String city = cities[i].toLowerCase();
-            if (s.contains(city)) {
-                q.remove(city);
-                cnt++;
+        Set<String> cache = new LinkedHashSet<>();
+        for (int i = 0; i < cities.length; i++)
+            cities[i] = cities[i].toLowerCase();
+        
+        int total = 0;
+        for (String city : cities) {
+            if (cache.contains(city)) {
+                cache.remove(city);
+                total++;
             } else {
-                if (q.size() < cacheSize)
-                    s.add(city);
-                else {
-                    s.remove(q.poll());
-                    s.add(city);
-                }
-                cnt += 5;
+                if (cache.size() == cacheSize)
+                    cache.remove(cache.iterator().next());
+                total += 5;
             }
-            q.add(city);
+            cache.add(city);
         }
-        return cnt;
+        return total;
     }
 }
