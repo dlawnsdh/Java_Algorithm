@@ -1,20 +1,24 @@
 import java.util.*;
+import java.util.stream.*;
 
 class Solution {
     public int solution(int k, int[] tangerine) {
-        int[] arr = new int[10000001];
-        for (int i : tangerine)
-            arr[i]++;
-        Arrays.sort(arr);
-        
+        int[] arr = Arrays.stream(tangerine)
+            .boxed()
+            .collect(Collectors.groupingBy(t -> t, Collectors.counting()))
+            .values()
+            .stream().sorted(Collections.reverseOrder())
+            .mapToInt(Long::intValue)
+            .toArray();
         int sum = 0;
-        int cnt =0;
-        for (int i = arr.length - 1; i > 0; i--) {
+        int num = 0;
+        for (int i = 0; i < arr.length; i++) {
             sum += arr[i];
-            cnt++;
-            if (sum >= k) 
+            if (sum >= k) {
+                num = i + 1;   
                 break;
+            }
         }
-        return cnt;
+        return num;
     }
 }
