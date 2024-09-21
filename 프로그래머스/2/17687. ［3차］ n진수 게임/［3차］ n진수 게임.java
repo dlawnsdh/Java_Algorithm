@@ -1,24 +1,31 @@
 class Solution {
     public String solution(int n, int t, int m, int p) {
-        StringBuilder b = new StringBuilder();
-        int k = 0;
-        while (b.length() < m * (t - 1) + p) {
-            int num = k++;
-            StringBuffer bf = new StringBuffer();
-            while (num >= n) {
-                if (num % n >= 10)
-                    bf.append((char) (num % n + 55));
-                else bf.append(num % n); 
-                num /= n;
+        char[] arr = new char[m * t];
+        int idx = 0;
+        int num = 0;
+        while (idx < arr.length) {
+            StringBuilder b = new StringBuilder(); 
+            int k = num++;
+            while (k >= n) {
+                if (k % n >= 10)
+                    b.append((char) (k % n + 55));
+                else b.append(k % n);
+                k /= n;
             }
-            if (n > num && num >= 10) bf.append((char) (num + 55)).reverse(); 
-            else bf.append(num).reverse();
-            b.append(bf);
+            if (k >= 10) b.append((char) (k + 55));
+            else b.append(k);
+            b.reverse();
+            
+            for (int i = 0; i < b.length(); i++) {
+                arr[idx++] = b.charAt(i);
+                if (idx >= arr.length) 
+                    break;
+            }
         }
         
-        StringBuilder result = new StringBuilder();
-        for (int i = p - 1; i < b.length(); i += m)
-            result.append(b.charAt(i));
-        return result.substring(0, t);
+        StringBuilder sb = new StringBuilder();
+        for (int i = p - 1; i < arr.length; i += m)
+            sb.append(arr[i]);
+        return sb.toString();
     }
 }
