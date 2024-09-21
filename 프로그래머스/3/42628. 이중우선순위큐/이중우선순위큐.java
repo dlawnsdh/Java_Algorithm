@@ -2,23 +2,19 @@ import java.util.*;
 
 class Solution {
     public int[] solution(String[] operations) {
-        PriorityQueue<Integer> q1 = new PriorityQueue<>();
-        PriorityQueue<Integer> q2 = new PriorityQueue<>(new Comparator<Integer>() {
-            @Override
-            public int compare(Integer o1, Integer o2) {
-                return -Integer.compare(o1, o2);
-            }
-        });
-        for (int i = 0; i < operations.length; i++) {
-            if (operations[i].charAt(0) == 'I') {
-                q1.add(Integer.parseInt(operations[i].substring(2)));
-                q2.add(Integer.parseInt(operations[i].substring(2)));
-            } else if (operations[i].equals("D -1") && !q1.isEmpty()) {
-                q2.remove(q1.poll());
-            } else if (operations[i].equals("D 1") && !q2.isEmpty()) {
-                q1.remove(q2.poll());    
-            }
+        PriorityQueue<Integer> minQ = new PriorityQueue<>();
+        PriorityQueue<Integer> maxQ = new PriorityQueue<>((a, b) -> b - a);
+        
+        for (String op : operations) {
+            if (op.charAt(0) == 'I') {
+                int num = Integer.parseInt(op.substring(2));
+                minQ.add(num);
+                maxQ.add(num);
+            } else if (op.charAt(2) == '1' && !maxQ.isEmpty())
+                minQ.remove(maxQ.poll());
+            else if (op.charAt(2) == '-' && !minQ.isEmpty())
+                maxQ.remove(minQ.poll());
         }
-        return q1.isEmpty() || q2.isEmpty() ? new int[] {0, 0} : new int[] {q2.poll(), q1.poll()};
+        return minQ.isEmpty() || maxQ.isEmpty() ? new int[] {0, 0} : new int[] {maxQ.peek(), minQ.peek()};
     }
 }
