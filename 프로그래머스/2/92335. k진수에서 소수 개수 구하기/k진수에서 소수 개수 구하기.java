@@ -1,22 +1,17 @@
 import java.util.*;
 
 class Solution {
+    boolean isPrime(long n) {
+        if (n == 1) return false;
+        for (int i = 2; i <= Math.sqrt(n); i++)
+            if (n % i == 0)
+                return false;
+        return true;
+    }
+    
     public int solution(int n, int k) {
-        StringBuilder b = new StringBuilder();
-        while (n > k) {
-            b.append(n % k);
-            n /= k;
-        }
-        b = b.append(n).reverse();
-        
-        return (int) Arrays.stream(b.toString().split("0"))
-            .filter(s -> !s.equals("") && Long.parseLong(s) > 1)
-            .mapToLong(Long::parseLong)
-            .filter(i -> {
-                for (int j = 2; j <= Math.sqrt(i); j++)
-                    if (i % j == 0) 
-                        return false;
-                return true;
-            }).count();
+        return (int) Arrays.stream(Integer.toString(n, k).split("0"))
+            .filter(s -> !s.isEmpty() && isPrime(Long.parseLong(s)))
+            .count();
     }
 }
