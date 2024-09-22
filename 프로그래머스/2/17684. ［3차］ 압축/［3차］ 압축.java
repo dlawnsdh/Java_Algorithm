@@ -1,33 +1,32 @@
 import java.util.*;
 
 class Solution {
+    Map<String, Integer> dic = new HashMap<>();
+    
     public int[] solution(String msg) {
-        List<Integer> l = new ArrayList<>();
-        Map<String, Integer> m = new HashMap<>();
-        for (char i = 'A'; i <= 'Z'; i++)
-            m.put(String.valueOf(i), (int) (i - 64));
+        int idx = 1;
+        while (idx <= 26)
+            dic.put(String.valueOf((char) (idx + 64)), idx++);
         
-        int idx = 27;
+        List<Integer> index = new ArrayList<>();
         for (int i = 0; i < msg.length(); i++) {
-            boolean flag = true;
-            String tmp = "";
+            String str = "";
+            boolean isLastWord = true;
             for (int k = i + 1; k <= msg.length(); k++) {
-                tmp = msg.substring(i, k);
-                if (!m.containsKey(tmp)) {
+                str = msg.substring(i, k);
+                if (!dic.containsKey(str)) {
+                    index.add(dic.get(str.substring(0, str.length() - 1)));
+                    isLastWord = false;
                     i = k - 2;
-                    flag = false;
-                    l.add(m.get(tmp.substring(0, tmp.length() - 1)));
                     break;
                 }
             }
-            if (flag) {
-                l.add(m.get(tmp));
+            if (isLastWord) {
+                index.add(dic.get(str));
                 break;
             }
-            m.put(tmp, idx);
-            idx++;
+            dic.put(str, idx++);
         }
-        
-        return l.stream().mapToInt(Integer::intValue).toArray();
+        return index.stream().mapToInt(Integer::intValue).toArray();
     }
 }
