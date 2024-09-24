@@ -2,20 +2,20 @@ import java.util.*;
 
 class Solution {
     public int solution(int[] topping) {
-        Map<Integer, Integer> m1 = new HashMap<>();
-        Map<Integer, Integer> m2 = new HashMap<>();
-        for (int i : topping)
-            m2.put(i, m2.getOrDefault(i, 0) + 1);
+        Map<Integer, Integer> l = new HashMap<>();
+        Map<Integer, Integer> r = new HashMap<>();
+        for (int t : topping)
+            r.compute(t, (k, v) -> v == null ? 1 : v + 1);
         
-        int cnt = 0;
-        for (int i = 0; i < topping.length; i++) {
-            m1.put(topping[i], m1.getOrDefault(topping[i], 0) + 1);
-            m2.put(topping[i], m2.getOrDefault(topping[i], 0) - 1);
-            if (m2.get(topping[i]) <= 0)
-                m2.remove(topping[i]);
-            if (m1.size() == m2.size())
-                cnt++;
+        int count = 0;
+        for (int t : topping) {
+            r.compute(t, (k, v) -> v - 1);
+            l.compute(t, (k, v) -> v == null ? 1 : v + 1);
+            if (r.get(t) == 0 ) 
+                r.remove(t);
+            if (l.keySet().size() == r.keySet().size())
+                count++;
         }
-        return cnt;
+        return count;
     }
 }
