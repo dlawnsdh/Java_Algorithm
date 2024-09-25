@@ -2,33 +2,26 @@ import java.util.*;
 
 class Solution {
     public int solution(int[] order) {
-        Stack<Integer> s = new Stack<>();
-        LinkedList<Integer> q = new LinkedList<>();
-        for (int i = 1; i <= order.length; i++)
-            q.add(i);
-          
-        int sum = 0;
+        Stack<Integer> st = new Stack<>();
         int idx = 0;
-        while (!q.isEmpty()) {
-            if (order[idx] == q.peek()) {
-                sum++;
+        int count = 0;
+        for (int box = 1; box <= order.length;) {
+            if (order[idx] == box) {
+                count++;
+                box++;
                 idx++;
-                q.poll();
-            } else {
-                if (!s.isEmpty() && order[idx] == s.peek()) {
-                    sum++;
-                    idx++;
-                    s.pop();
-                } else s.push(q.poll());
-            }
-        }
-        while (!s.isEmpty()) {
-            if (order[idx] == s.pop()) {
+            } else if (!st.isEmpty() && st.peek() == order[idx]) {
+                count++;
                 idx++;
-                sum++;
-            }
-            else break;
+                st.pop();
+            } else st.push(box++);
         }
-        return sum;
+        while (!st.isEmpty()) {
+            if (order[idx] == st.pop()) {
+                idx++;
+                count++;
+            } else break; 
+        }
+        return count;
     }
 }
