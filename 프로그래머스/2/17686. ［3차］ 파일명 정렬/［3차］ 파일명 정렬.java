@@ -1,35 +1,52 @@
 import java.util.*;
 
 class Solution {
-    public String[] solution(String[] files) {
-        List<String[]> l = new ArrayList<>();
-        for (String name : files) {
-            String[] arr = new String[3];
-            StringBuilder b = new StringBuilder();
-            int idx = 0;
-            for (; idx < name.length(); idx++) {
-                if (!Character.isDigit(name.charAt(idx)))
-                    b.append(name.charAt(idx));
-                else break;
-            }
-            arr[0] = b.toString();
-            b = new StringBuilder();
-            for (; idx < name.length(); idx++) {
-                if (Character.isDigit(name.charAt(idx)) && b.length() < 5) 
-                    b.append(name.charAt(idx));
-                else break;
-            }
-            arr[1] = b.toString();
-            arr[2] = name.substring(idx);
-            l.add(arr);
+    class FileInfo implements Comparable<FileInfo> {
+        String head;
+        String number;
+        String tail;
+        
+        FileInfo(String h, String n, String t) {
+            this.head = h;
+            this.number = n;
+            this.tail = t;
         }
         
-        return l.stream()
-            .sorted((arr1, arr2) -> {
-                if (arr1[0].equalsIgnoreCase(arr2[0]))
-                    return Integer.compare(Integer.parseInt(arr1[1]), Integer.parseInt(arr2[1]));
-                return arr1[0].compareToIgnoreCase(arr2[0]);})
-            .map(arr -> arr[0] + arr[1] + arr[2])
+        String getFullFileName() {
+            return head + number + tail;
+        }
+        
+        @Override
+        public int compareTo(FileInfo o) {
+            if (this.head.compareToIgnoreCase(o.head) == 0)
+                return Integer.parseInt(this.number) - Integer.parseInt(o.number);
+            return this.head.compareToIgnoreCase(o.head);
+        }
+    }
+    
+    public String[] solution(String[] files) {
+        List<FileInfo> info = new ArrayList<>();
+        
+        for (String file : files) {
+            StringBuilder head = new StringBuilder();
+            StringBuilder number = new StringBuilder();
+            
+            int idx = 0;
+            boolean isHead = true;
+            while (idx < file.length()) {
+                if (!Character.isDigit(file.charAt(idx)) && isHead)
+                    head.append(file.charAt(idx++));
+                else if (Character.isDigit(file.charAt(idx))) {
+                    number.append(file.charAt(idx++));
+                    isHead = false;
+                } else break;
+            }   
+            info.add(new FileInfo(head.toString(), number.toString(), file.substring(idx)));
+        }
+        
+        return info.stream()
+            .sorted()
+            .map(i -> i.getFullFileName())
             .toArray(String[]::new);
     }
 }
