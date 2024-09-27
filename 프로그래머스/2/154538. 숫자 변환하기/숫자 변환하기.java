@@ -1,26 +1,34 @@
 import java.util.*;
 
 class Solution {
-    public int solution(int x, int y, int n) {
-        LinkedList<Integer> q = new LinkedList<>();
-        int[] dist = new int[1000001];
+    int bfs(int x, int y, int n) {
+        Queue<Integer> q = new LinkedList<>();
+        int[] dist = new int[y + 1];
         Arrays.fill(dist, -1);
         
-        int cnt = 0;
         dist[x] = 0;
         q.add(x);
         while (!q.isEmpty()) {
             int cur = q.poll();
-            if (cur == y) break;
-            for (int i = 1; i <= 3; i++) {
-                int nx;
-                if (i == 1) nx = cur + n;
-                else nx = cur * i;
-                if (nx > 1000000 || dist[nx] >= 0) continue;
-                dist[nx] = dist[cur] + 1;
-                q.add(nx);
+            if (cur == y)
+                return dist[y];
+            if (cur + n <= y && dist[cur + n] < 0) {
+                dist[cur + n] = dist[cur] + 1;
+                q.add(cur + n);
+            }
+            if (cur * 2 <= y && dist[cur * 2] < 0) {
+                dist[cur * 2] = dist[cur] + 1;
+                q.add(cur * 2);
+            }
+            if (cur * 3 <= y && dist[cur * 3] < 0) {
+                dist[cur * 3] = dist[cur] + 1;
+                q.add(cur * 3);
             }
         }
-        return dist[y];
+        return -1;
+    } 
+    
+    public int solution(int x, int y, int n) {
+        return bfs(x, y, n);
     }
 }
