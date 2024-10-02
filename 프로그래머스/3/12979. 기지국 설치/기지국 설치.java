@@ -1,21 +1,21 @@
 import java.util.*;
 
 class Solution {
-    public int solution(int n, int[] stations, int w) {
-        Stack<Integer> s = new Stack<>();
-        int sum = 0;
-        int len = 1;
-        for (int i = 0; i < stations.length; i++) {
-            sum += add(Math.max(0, stations[i] - len - w), w * 2 + 1);
-            len = stations[i] + w + 1;
-        }
-        sum += add(Math.max(0, n - (stations[stations.length - 1] + w)), w * 2 + 1);
-        return sum;
+    int add(int a, int b) {
+        return a % b == 0 ? a / b : a / b + 1;
     }
     
-    public int add(int n, int m) {
-        if (n == 0) return 0;
-        else if (n % m == 0) return n / m;
-        else return n / m + 1;
+    public int solution(int n, int[] stations, int w) {
+        int d = 2 * w + 1;
+        int st = 1;
+        int total = 0;
+        for (int i = 0; i < stations.length; i++) {
+            if (stations[i] - w - st > 0)
+                total += add(stations[i] - w - st, d);
+            st = stations[i] + w + 1;
+        }
+        if (n > stations[stations.length - 1] + w) 
+            total += add(n - (stations[stations.length - 1] + w), d);
+        return total;
     }
 }
