@@ -1,43 +1,47 @@
 import java.util.*;
 
 class Solution {
-    public int[] solution(String[] genres, int[] plays) {
-        List<Music> l = new ArrayList<>();
-        Map<String, Integer> total = new HashMap<>();
-        Map<String, Integer> including = new HashMap<>();
-        for (int i = 0; i < genres.length; i++) {
-            total.put(genres[i], total.getOrDefault(genres[i], 0) + plays[i]);
-            l.add(new Music(genres[i], i, plays[i]));
+    class Genre implements Comparable<Genre> {
+        String genre;
+        List<int[]> songs = new ArrayList<>();
+        
+        Genre(String g) {
+            this.genre = g;
         }
         
-        l.sort((m1, m2) -> {
-            if (total.get(m1.getGenre()) == total.get(m2.getGenre()))
-                return -Integer.compare(m1.getPlayed(), m2.getPlayed());
-            return -Integer.compare(total.get(m1.getGenre()), total.get(m2.getGenre()));
-        });
+        int getTotalPlay() {
+            return songs.stream()
+                .mapToInt(i -> i[1])
+                .sum();
+        }
         
-        List<Integer> result = new ArrayList<>();
-        for (Music m : l)
-            if (including.getOrDefault(m.getGenre(), 0) < 2) {
-                result.add(m.getNumber());
-                including.put(m.getGenre(), including.getOrDefault(m.getGenre(), 0) + 1);
-            }
-        return result.stream().mapToInt(Integer::intValue).toArray();
+        @Override
+        public int compareTo(Genre o) {
+            return o.getTotalPlay() - this.getTotalPlay();
+        }
     }
     
-    class Music {
-        String genre;
-        int number;
-        int played;
-        
-        public Music(String g, int n, int p) {
-            genre = g;
-            number = n;
-            played = p;
+    public int[] solution(String[] genres, int[] plays) {
+        Map<String, Genre> m = new HashMap<>();
+        for (int i = 0; i < genres.length; i++) {
+            String g = genres[i];
+            m.computeIfAbsent(g, k -> new Genre(g))
+                .songs
+                .add(new int[] {i, plays[i]});
         }
         
-        public String getGenre() { return genre; }
-        public int getNumber() { return number; }
-        public int getPlayed() { return played; }
+        List<Integer> result = new ArrayList<>();
+        m.values().stream()
+            .sorted()
+            .map(g -> g.songs.stream()
+                 .sorted((a, b) -> b[1] - a[1])
+                 .limit(2)
+                 .mapToInt(i -> i[0])
+                 .toArray())
+            .forEach(info -> {
+                for (int i : info)
+                    result.add(i);
+            });
+        return result.stream().mapToInt(Integer::intValue).toArray();
     }
 }
