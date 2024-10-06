@@ -1,27 +1,25 @@
 import java.util.*;
 
 class Solution {
-    List<String> l = new ArrayList<>();
-    boolean[] used;
+    PriorityQueue<String> route = new PriorityQueue<>();
+    boolean[] visited;
     
-    public void dfs (String[][] tickets, String airport, String path, int d) {
-        if (d == tickets.length) {
-            l.add(path);
-            return;
+    void dfs(String[][] t, String s, int d, int r) {
+        if (d == r)
+            route.add(s);
+        else {
+            for (int i = 0; i < t.length; i++)
+                if (!visited[i] && s.endsWith(t[i][0])) {
+                    visited[i] = true;
+                    dfs(t, s + " " + t[i][1], d + 1, r);
+                    visited[i] = false;
+                }
         }
-        
-        for (int i = 0; i < used.length; i++)
-            if (!used[i] && airport.equals(tickets[i][0])) {
-                used[i] = true;
-                dfs(tickets, tickets[i][1], path + " " + tickets[i][1], d + 1);
-                used[i] = false;
-            }
     }
     
     public String[] solution(String[][] tickets) {
-        used = new boolean[tickets.length];
-        dfs(tickets, "ICN", "ICN", 0);
-        Collections.sort(l);
-        return l.get(0).split(" ");
+        visited = new boolean[tickets.length];
+        dfs(tickets, "ICN", 0, tickets.length);
+        return route.poll().split(" ");
     }
 }
