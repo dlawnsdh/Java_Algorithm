@@ -12,17 +12,13 @@ class Solution {
             this.time = t;
         }
         
-        void changeStart(int t) {
-            start = t;
+        void changeStart(int st) {
+            start = st;
         }
         
         void discountTime(int t) {
             time -= t;
         }
-        
-        String tostring() {
-            return String.format("%d:%d", start / 60, start % 60);
-        }   
         
         @Override
         public int compareTo(Homework o) {
@@ -40,8 +36,9 @@ class Solution {
             hw.add(new Homework(p[0], convertTime(p[1]), Integer.parseInt(p[2])));
         
         List<String> complete = new ArrayList<>();
-        Homework prev = hw.poll();
         Stack<Homework> next = new Stack<>();
+        
+        Homework prev = hw.poll();
         while (!hw.isEmpty()) {
             if (prev.start + prev.time < hw.peek().start) {
                 complete.add(prev.name);
@@ -55,12 +52,11 @@ class Solution {
             } else {
                 prev.discountTime(hw.peek().start - prev.start);
                 next.push(prev);
-                System.out.println(prev.name + " " + prev.time);
                 prev = hw.poll();
             }
         }
         complete.add(prev.name); // 맨 마지막 과제는 새로 진행할 과제가 없으므로 미뤄둔 과제를 하기전에 끝냄
-        while (!next.isEmpty())
+        while (!next.isEmpty())  // 그 후에 미뤄둔 과제들을 처리함
             complete.add(next.pop().name);
         
         return complete.stream().toArray(String[]::new);
