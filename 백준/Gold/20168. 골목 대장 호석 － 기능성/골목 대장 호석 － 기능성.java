@@ -4,26 +4,25 @@ import java.io.*;
 public class Main {
     static List<List<int[]>> g = new ArrayList<>();
     
-    static int dijkstra(int st, int en, int c) {
+    static boolean dijkstra(int st, int en, int fee, int c) {
         PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]);
         int[] dist = new int[g.size()];
-        Arrays.fill(dist, -1);
+        Arrays.fill(dist, 100000000);
 
         dist[st] = 0;
-        pq.add(new int[] {st, 0, c});
+        pq.add(new int[] {st, 0});
         while (!pq.isEmpty()) {
             int[] cur = pq.poll();
-            if (cur[0] == en)
-                return dist[en];
             for (int i = 0; i < g.get(cur[0]).size(); i++) {
                 int[] nx = g.get(cur[0]).get(i);
-                if (cur[2] - nx[1] < 0 || dist[nx[0]] >= 0) 
-                    continue;
-                dist[nx[0]] = Math.max(dist[cur[0]], nx[1]);
-                pq.add(new int[] {nx[0], dist[nx[0]], cur[2] - nx[1]});
+                if (nx[1] > fee) continue;
+                if (dist[nx[0]] > dist[cur[0]] + nx[1]) {
+                    dist[nx[0]] = dist[cur[0]] + nx[1];
+                    pq.add(new int[] {nx[0], dist[nx[0]]});
+                }
             }
         }
-        return -1;
+        return dist[en] <= c;
     }
     
     public static void main(String[] args) throws IOException {
@@ -45,6 +44,16 @@ public class Main {
             g.get(y).add(new int[] {x, z});
         }
         
-        System.out.print(dijkstra(a, b, c));
+        int s = 1;
+        int e = 1000;
+        int min = -1;
+        while (s <= e) {
+            int mid = (s + e) / 2;
+            if (dijkstra(a, b, mid, c)) {
+                min = mid;
+                e = mid - 1;
+            } else s = mid + 1;
+        }
+        System.out.print(min);
     }
 }
